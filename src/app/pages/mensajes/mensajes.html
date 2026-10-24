@@ -1,0 +1,20 @@
+<div class="wrap page">
+    <h1 style="margin-bottom:12px">Mensajes</h1>
+    <div class="panel chat">
+      <div class="chat-l">
+        <button class="conv" [class.on]="sel() === 0" (click)="select(0)"><div class="avatar">MR</div><div class="t"><b>Mateo Ríos</b><span class="sm muted">Claro, el lunes a las 12 te espero</span></div>@if (unread()[0]) { <span class="badge-n">1</span> }</button>
+        <button class="conv" [class.on]="sel() === 1" (click)="select(1)"><div class="avatar">CT</div><div class="t"><b>Carlos Torres</b><span class="sm muted">¿Tienes alguna mascota?</span></div>@if (unread()[1]) { <span class="badge-n">1</span> }</button>
+        <button class="conv" [class.on]="sel() === 2" (click)="select(2)"><div class="avatar">RL</div><div class="t"><b>Rosa Luna</b><span class="sm muted">Tu solicitud fue aceptada</span></div></button>
+        <button class="conv" [class.on]="sel() === 3" (click)="select(3)"><div class="avatar">CN</div><div class="t"><b>Equipo CampusNest</b><span class="sm muted">Verifica tu correo institucional</span></div></button>
+      </div>
+      <div class="chat-r">
+        <div class="panel-h"><div class="row"><div class="avatar">MR</div><div><b>Mateo Ríos</b><div class="sm muted">Habitación frente al campus · S/ 650</div></div></div><a class="btn btn-sm" routerLink="/habitacion">Ver habitación</a></div>
+        <div class="chat-b" #chatBox>
+          @for (m of messages(); track $index) {
+            <div class="msg" [class.me]="m.me">{{ m.text }}<small>{{ m.time }}</small></div>
+          }
+        </div>
+        <form class="chat-f" (submit)="send($event, chatInput)"><input class="inp" #chatInput placeholder="Escribe un mensaje…" aria-label="Mensaje"><button class="btn btn-primary" type="submit">Enviar</button></form>
+      </div>
+    </div>
+  </div>

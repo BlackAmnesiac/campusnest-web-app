@@ -1,0 +1,63 @@
+<div class="wrap page">
+    <div class="head-row"><div><h1>Publicar habitación</h1><p class="muted">Completa los pasos. Puedes guardar un borrador en cualquier momento.</p></div><button class="btn" (click)="toast.show('Borrador guardado (demo)')">Guardar borrador</button></div>
+    <div class="wiz">
+      <aside class="vsteps panel" style="padding:4px 0;overflow:hidden">
+        <button  (click)="tab.set('a')" [class.on]="tab()==='a'">1 · Datos básicos</button>
+        <button (click)="tab.set('b')" [class.on]="tab()==='b'">2 · Fotos</button>
+        <button (click)="tab.set('c')" [class.on]="tab()==='c'">3 · Servicios y reglas</button>
+        <button (click)="tab.set('d')" [class.on]="tab()==='d'">4 · Perfil de convivencia</button>
+        <button (click)="tab.set('e')" [class.on]="tab()==='e'">5 · Precio y disponibilidad</button>
+      </aside>
+
+      <div class="panel pad">
+        <div [hidden]="tab()!=='a'">
+          <h2 style="margin-bottom:12px">Datos básicos</h2>
+          <label class="field"><span>Título del anuncio</span><input placeholder="Ej. Habitación individual frente al campus"></label>
+          <div class="grid2"><label class="field"><span>Tipo</span><select><option>Individual</option><option>Compartida</option></select></label><label class="field"><span>Distrito</span><input placeholder="San Miguel"></label></div>
+          <label class="field"><span>Dirección (solo se muestra tras aceptar)</span><input placeholder="Av. / Jr. / Calle"></label>
+          <label class="field"><span>Descripción</span><textarea placeholder="Describe la habitación, el edificio y la zona…"></textarea></label>
+          <div class="row"><span class="sp"></span><button class="btn btn-primary" (click)="tab.set('b')">Siguiente</button></div>
+        </div>
+        <div [hidden]="tab()!=='b'">
+          <h2 style="margin-bottom:12px">Fotos</h2>
+          <div class="drop"><b>Arrastra tus fotos aquí</b><div class="sm">o <span class="accent">selecciónalas</span> · mínimo 4, máximo 12 · JPG o PNG</div></div>
+          <div class="thumbs"><div class="ph"><svg><use href="#room"/></svg></div><div class="ph"><svg><use href="#room"/></svg></div><div class="ph"><svg><use href="#room"/></svg></div><div class="ph"><span>+ Agregar</span></div></div>
+          <div class="row" style="margin-top:16px"><button class="btn" (click)="tab.set('a')">Atrás</button><span class="sp"></span><button class="btn btn-primary" (click)="tab.set('c')">Siguiente</button></div>
+        </div>
+        <div [hidden]="tab()!=='c'">
+          <h2 style="margin-bottom:12px">Servicios y reglas</h2>
+          <p class="up" style="margin-bottom:6px">Servicios incluidos en el precio</p>
+          <div class="chips" style="margin-bottom:16px"><button class="chip on" data-chip>Agua</button><button class="chip on" data-chip>Luz</button><button class="chip on" data-chip>Internet</button><button class="chip" data-chip>Lavandería</button><button class="chip" data-chip>Cocina compartida</button><button class="chip" data-chip>Amoblado</button></div>
+          <p class="up" style="margin-bottom:6px">Reglas de la casa</p>
+          <div class="chips" style="margin-bottom:16px"><button class="chip on" data-chip>No fumar</button><button class="chip" data-chip>Sin mascotas</button><button class="chip on" data-chip>Visitas hasta 10 pm</button><button class="chip" data-chip>Solo mujeres</button><button class="chip" data-chip>Solo varones</button></div>
+          <div class="row"><button class="btn" (click)="tab.set('b')">Atrás</button><span class="sp"></span><button class="btn btn-primary" (click)="tab.set('d')">Siguiente</button></div>
+        </div>
+        <div [hidden]="tab()!=='d'">
+          <h2 style="margin-bottom:4px">Perfil de convivencia de la casa</h2>
+          <p class="muted" style="margin-bottom:8px">Describe el ambiente para calcular el match con los estudiantes.</p>
+          <div class="qrow"><b>Ambiente</b><div class="seg" data-seg><button>Silencioso</button><button class="on">Tranquilo</button><button>Social</button></div></div>
+          <div class="qrow"><b>Horario predominante</b><div class="seg" data-seg><button class="on">Madrugador</button><button>Flexible</button><button>Nocturno</button></div></div>
+          <div class="qrow"><b>Orden esperado</b><div class="seg" data-seg><button>Relajado</button><button>Normal</button><button class="on">Muy ordenado</button></div></div>
+          <div class="row" style="margin-top:16px"><button class="btn" (click)="tab.set('c')">Atrás</button><span class="sp"></span><button class="btn btn-primary" (click)="tab.set('e')">Siguiente</button></div>
+        </div>
+        <div [hidden]="tab()!=='e'">
+          <h2 style="margin-bottom:12px">Precio y disponibilidad</h2>
+          <div class="grid2"><label class="field"><span>Precio mensual (S/)</span><input type="number" placeholder="650"></label><label class="field"><span>Garantía (S/)</span><input type="number" placeholder="650"></label></div>
+          <div class="grid2"><label class="field"><span>Disponible desde</span><input type="date"></label><label class="field"><span>Contrato mínimo</span><select><option>3 meses</option><option selected>5 meses</option><option>10 meses</option></select></label></div>
+          <p class="up" style="margin:4px 0 6px">Visitas</p>
+          <label class="check"><input type="checkbox" checked> Permitir visitas presenciales</label>
+          <label class="check"><input type="checkbox" checked> Permitir visitas virtuales</label>
+          <div class="row" style="margin-top:16px"><button class="btn" (click)="tab.set('d')">Atrás</button><span class="sp"></span><button class="btn btn-primary" (click)="toast.show('Habitación publicada (demo)', '/anfitrion')">Publicar</button></div>
+        </div>
+      </div>
+
+      <aside>
+        <span class="up">Vista previa</span>
+        <div class="card" style="margin-top:8px;pointer-events:none">
+          <div class="ph"><svg><use href="#room"/></svg></div>
+          <div class="in"><div class="lo"><svg aria-hidden="true"><use href="#pin"/></svg>San Miguel, Lima</div><div class="ti">Habitación individual frente al campus</div><div class="ft"><span class="tag hi">92% match</span></div><div class="buy"><div class="pr num">S/ 650 <small>/ mes</small></div><span class="btn btn-primary btn-sm">Ver más</span></div></div>
+        </div>
+        <p class="sm muted" style="margin-top:8px">Así verán tu anuncio los estudiantes en los resultados.</p>
+      </aside>
+    </div>
+  </div>
