@@ -1,0 +1,63 @@
+@if (isPublic()) {
+  <nav class="nav">
+    <div class="wrap">
+      <a class="brand" [href]="landingUrl"><svg><use href="#logo" /></svg>CampusNest</a>
+      <div class="nav-links">
+        <a routerLink="/buscar" routerLinkActive="on">Habitaciones</a>
+        <a [href]="landingUrl + '#como'">Cómo funciona</a>
+        <a routerLink="/registro" (click)="session.regRole.set('host')">Ofrecer un cuarto</a>
+      </div>
+      <div class="nav-right">
+        <a routerLink="/login">Iniciar sesión</a>
+        <a class="btn btn-secondary" routerLink="/registro" (click)="session.regRole.set('student')">Regístrate</a>
+      </div>
+    </div>
+  </nav>
+} @else if (session.role() === 'host') {
+  <nav class="nav">
+    <div class="wrap">
+      <a class="brand" routerLink="/anfitrion"><svg><use href="#logo" /></svg>CampusNest <span class="tag mut">Anfitrión</span></a>
+      <div class="nav-links">
+        <a routerLink="/anfitrion" routerLinkActive="on">Panel</a>
+        <a routerLink="/mensajes" routerLinkActive="on">Mensajes<span class="badge-n">3</span></a>
+        <a routerLink="/buscar" routerLinkActive="on">Ver portal</a>
+      </div>
+      <div class="nav-right">
+        <a class="btn btn-primary" routerLink="/publicar">+ Publicar habitación</a>
+        <div class="user">
+          <button class="avatar" (click)="toggle($event)" aria-label="Menú de usuario">MR</button>
+          <div class="menu" [hidden]="!menuOpen()">
+            <div class="pad sm muted">Mateo R. · Estudiante anfitrión</div>
+            <button (click)="switchRole('student')">Cambiar a modo buscador (demo)</button>
+            <hr>
+            <a routerLink="/login">Cerrar sesión</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+} @else {
+  <nav class="nav">
+    <div class="wrap">
+      <a class="brand" routerLink="/buscar"><svg><use href="#logo" /></svg>CampusNest</a>
+      <div class="nav-links">
+        <a routerLink="/buscar" routerLinkActive="on">Buscar</a>
+        <a routerLink="/estudiante" routerLinkActive="on">Mi panel</a>
+        <a routerLink="/mensajes" routerLinkActive="on">Mensajes<span class="badge-n">2</span></a>
+        <a routerLink="/perfil" routerLinkActive="on">Mi perfil</a>
+      </div>
+      <div class="nav-right">
+        <div class="user">
+          <button class="avatar" (click)="toggle($event)" aria-label="Menú de usuario">AC</button>
+          <div class="menu" [hidden]="!menuOpen()">
+            <div class="pad sm muted">Andy C. · Estudiante buscador</div>
+            <a routerLink="/perfil">Mi perfil de convivencia</a>
+            <button (click)="switchRole('host')">Cambiar a modo anfitrión (demo)</button>
+            <hr>
+            <a routerLink="/login">Cerrar sesión</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+}

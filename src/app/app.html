@@ -1,0 +1,5 @@
+<app-navbar />
+<router-outlet />
+@if (toast.message(); as msg) {
+  <div id="toast" role="status">{{ msg }}</div>
+}
