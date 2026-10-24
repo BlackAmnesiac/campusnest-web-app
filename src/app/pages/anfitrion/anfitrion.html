@@ -1,0 +1,46 @@
+<div class="wrap page">
+    <div class="head-row"><div><h1>Panel de anfitrión</h1><p class="muted">Gestiona tus habitaciones, solicitudes y visitas.</p></div><a class="btn btn-primary" routerLink="/publicar">+ Publicar habitación</a></div>
+    <div class="grid4" style="margin-bottom:12px">
+      <div class="panel stat"><span class="up">Publicaciones activas</span><b class="num">3</b></div>
+      <div class="panel stat"><span class="up">Solicitudes nuevas</span><b class="num">5</b></div>
+      <div class="panel stat"><span class="up">Visitas esta semana</span><b class="num">4</b></div>
+      <div class="panel stat"><span class="up">Ocupación</span><b class="num">67%</b></div>
+    </div>
+    <div class="tabs">
+      <button  (click)="tab.set('solic')" [class.on]="tab()==='solic'">Solicitudes <span class="badge-n">5</span></button>
+      <button (click)="tab.set('pub')" [class.on]="tab()==='pub'">Mis publicaciones</button>
+      <button (click)="tab.set('vis')" [class.on]="tab()==='vis'">Visitas</button>
+    </div>
+
+    <div class="panel" [hidden]="tab()!=='solic'">
+      <div class="list">
+        <div class="row"><div class="avatar">AC</div><div><b>Andy Condori</b> <span class="tag hi">92% match</span><div class="sm muted">Ing. de Software · 6.º ciclo · ✓ Correo verificado</div></div><span class="sp"></span><span class="sm muted">Frente al campus</span><button class="btn btn-sm">Ver perfil</button><button class="btn btn-sm">Rechazar</button><button class="btn btn-primary btn-sm">Aceptar</button></div>
+        <div class="row"><div class="avatar">VS</div><div><b>Valeria Soto</b> <span class="tag hi">86% match</span><div class="sm muted">Psicología · 4.º ciclo · ✓ Correo verificado</div></div><span class="sp"></span><span class="sm muted">Frente al campus</span><button class="btn btn-sm">Ver perfil</button><button class="btn btn-sm">Rechazar</button><button class="btn btn-primary btn-sm">Aceptar</button></div>
+        <div class="row"><div class="avatar">JQ</div><div><b>Jorge Quispe</b> <span class="tag">68% match</span><div class="sm muted">Administración · 8.º ciclo · ✓ Correo verificado</div></div><span class="sp"></span><span class="sm muted">Suite individual</span><button class="btn btn-sm">Ver perfil</button><button class="btn btn-sm">Rechazar</button><button class="btn btn-primary btn-sm">Aceptar</button></div>
+      </div>
+    </div>
+
+    <div class="panel" [hidden]="tab()!=='pub'">
+      <div class="table-wrap"><table class="table">
+        <thead><tr><th>Habitación</th><th>Precio</th><th>Estado</th><th>Vistas</th><th>Solicitudes</th><th></th></tr></thead>
+        <tbody>
+          <tr><td><b>Individual frente al campus</b><div class="sm muted">San Miguel</div></td><td class="num">S/ 650</td><td><span class="status ok">Activa</span></td><td class="num">214</td><td class="num">5</td><td><a class="btn btn-sm" routerLink="/publicar">Editar</a></td></tr>
+          <tr><td><b>Compartida, 2 estudiantes</b><div class="sm muted">San Miguel</div></td><td class="num">S/ 480</td><td><span class="status ok">Activa</span></td><td class="num">131</td><td class="num">2</td><td><a class="btn btn-sm" routerLink="/publicar">Editar</a></td></tr>
+          <tr><td><b>Suite individual</b><div class="sm muted">Magdalena</div></td><td class="num">S/ 800</td><td><span class="status">Ocupada</span></td><td class="num">87</td><td class="num">0</td><td><a class="btn btn-sm" routerLink="/publicar">Editar</a></td></tr>
+        </tbody></table></div>
+    </div>
+
+    <div class="cols" [hidden]="tab()!=='vis'">
+      <div class="panel"><div class="panel-h"><h2>Visitas de la semana</h2></div>
+        <div class="list">
+          <div class="row"><div class="avatar num">26</div><div><b>Andy Condori</b><div class="sm muted">Lun 26 · 12:00 · Presencial · Frente al campus</div></div><span class="sp"></span><span class="tag hi">Confirmada</span></div>
+          <div class="row"><div class="avatar num">27</div><div><b>Valeria Soto</b><div class="sm muted">Mar 27 · 16:00 · Virtual · Frente al campus</div></div><span class="sp"></span><span class="tag">Pendiente</span></div>
+          <div class="row"><div class="avatar num">29</div><div><b>Jorge Quispe</b><div class="sm muted">Jue 29 · 18:00 · Presencial · Suite individual</div></div><span class="sp"></span><span class="tag">Pendiente</span></div>
+        </div></div>
+      <div class="panel pad"><h2 style="font-size:14px;margin-bottom:10px">Disponibilidad</h2>
+        <div class="cal"><div class="h">L</div><div class="h">M</div><div class="h">M</div><div class="h">J</div><div class="h">V</div><div class="h">S</div><div class="h">D</div>
+          <div class="x">19</div><div class="x">20</div><div class="x">21</div><div class="x">22</div><div class="x">23</div><div class="x">24</div><div class="x">25</div>
+          <div class="v">26</div><div class="v">27</div><div>28</div><div class="v">29</div><div>30</div><div>31</div><div>1</div></div>
+      </div>
+    </div>
+  </div>

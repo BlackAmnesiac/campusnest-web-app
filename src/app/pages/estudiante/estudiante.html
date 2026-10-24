@@ -1,0 +1,44 @@
+<div class="wrap page">
+    <div class="head-row"><div><h1>Hola, Andy</h1><p class="muted">Esto es lo que pasa con tu búsqueda.</p></div><a class="btn btn-primary" routerLink="/buscar">Buscar habitaciones</a></div>
+
+    <div class="grid4" style="margin-bottom:12px">
+      <div class="panel stat"><span class="up">Visitas próximas</span><b class="num">2</b></div>
+      <div class="panel stat"><span class="up">Solicitudes activas</span><b class="num">3</b></div>
+      <div class="panel stat"><span class="up">Favoritos</span><b class="num">7</b></div>
+      <div class="panel stat"><span class="up">Perfil completo</span><b class="num">70%</b></div>
+    </div>
+
+    <div class="tabs">
+      <button  (click)="tab.set('visitas')" [class.on]="tab()==='visitas'">Visitas</button>
+      <button (click)="tab.set('solic')" [class.on]="tab()==='solic'">Solicitudes</button>
+      <button (click)="tab.set('fav')" [class.on]="tab()==='fav'">Favoritos</button>
+    </div>
+
+    <div class="cols" [hidden]="tab()!=='visitas'">
+      <div class="panel">
+        <div class="panel-h"><h2>Próximas visitas</h2><span class="muted sm">Octubre 2026</span></div>
+        <div class="list">
+          <div class="row"><div class="avatar num">26</div><div><b>Habitación frente al campus</b><div class="sm muted">Lun 26 · 12:00 · Presencial · San Miguel</div></div><span class="sp"></span><span class="tag hi">Confirmada</span><button class="btn btn-sm">Reprogramar</button></div>
+          <div class="row"><div class="avatar num">28</div><div><b>Amoblada, cocina incluida</b><div class="sm muted">Mié 28 · 18:00 · Virtual · Jesús María</div></div><span class="sp"></span><span class="tag">Pendiente</span><button class="btn btn-sm">Cancelar</button></div>
+        </div>
+      </div>
+      <div class="panel pad">
+        <h2 style="font-size:14px;margin-bottom:10px">Calendario</h2>
+        <div class="cal"><div class="h">L</div><div class="h">M</div><div class="h">M</div><div class="h">J</div><div class="h">V</div><div class="h">S</div><div class="h">D</div>
+          <div class="x">19</div><div class="x">20</div><div class="x">21</div><div class="x">22</div><div class="x">23</div><div class="x">24</div><div class="x">25</div>
+          <div class="v">26</div><div>27</div><div class="v">28</div><div>29</div><div>30</div><div>31</div><div>1</div></div>
+      </div>
+    </div>
+
+    <div class="panel" [hidden]="tab()!=='solic'">
+      <div class="table-wrap"><table class="table">
+        <thead><tr><th>Habitación</th><th>Estudiante anfitrión</th><th>Match</th><th>Estado</th><th></th></tr></thead>
+        <tbody>
+          <tr><td><b>Frente al campus</b><div class="sm muted">S/ 650 · San Miguel</div></td><td>Mateo R.</td><td><span class="tag hi">92%</span></td><td><span class="status ok">En revisión</span></td><td><a class="btn btn-sm" routerLink="/habitacion">Ver</a></td></tr>
+          <tr><td><b>Amoblada, cocina incluida</b><div class="sm muted">S/ 550 · Jesús María</div></td><td>Carlos T.</td><td><span class="tag hi">88%</span></td><td><span class="status">Enviada</span></td><td><a class="btn btn-sm" routerLink="/habitacion">Ver</a></td></tr>
+          <tr><td><b>Ambiente tranquilo para estudiar</b><div class="sm muted">S/ 430 · Pueblo Libre</div></td><td>Rosa L.</td><td><span class="tag hi">95%</span></td><td><span class="status ok">Aceptada</span></td><td><a class="btn btn-sm" routerLink="/habitacion">Ver</a></td></tr>
+        </tbody></table></div>
+    </div>
+
+    <div [hidden]="tab()!=='fav'"><div class="cards">@for (r of rooms.favRooms(); track r.id) { <a class="card" routerLink="/habitacion" roomCard [room]="r"></a> } @empty { <div class="empty">Aún no tienes favoritos. Toca ♡ en una habitación para guardarla.</div> }</div></div>
+  </div>
