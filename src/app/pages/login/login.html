@@ -1,0 +1,20 @@
+<div class="auth">
+    <div class="auth-side">
+      <span class="up">Bienvenido de vuelta</span>
+      <h2>Tu próximo nido te está esperando.</h2>
+      <ul><li>Revisa tus visitas agendadas</li><li>Responde mensajes de anfitriones</li><li>Consulta nuevas habitaciones con tu match</li></ul>
+    </div>
+    <div class="auth-main"><div class="auth-box">
+      <h1>Iniciar sesión</h1>
+      <p class="muted" style="margin-bottom:20px">¿No tienes cuenta? <a class="accent" routerLink="/registro">Regístrate</a></p>
+      <form (submit)="submit($event)">
+        <label class="field"><span>Correo</span><input type="email" placeholder="nombre@universidad.edu.pe"></label>
+        <label class="field"><span>Contraseña</span><input type="password" placeholder="••••••••"></label>
+        <div class="row" style="margin-bottom:16px"><label class="check sm"><input type="checkbox" checked> Mantener sesión</label><span class="sp"></span><a class="accent sm" routerLink="/login">¿Olvidaste tu contraseña?</a></div>
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Ingresar</button>
+      </form>
+      <hr class="hr" style="margin:20px 0">
+      <p class="sm muted" style="margin-bottom:8px">Demo — entrar directamente como:</p>
+      <div class="row"><button class="btn btn-sm" (click)="enter('student')">Estudiante</button><button class="btn btn-sm" (click)="enter('host')">Anfitrión</button></div>
+    </div></div>
+  </div>

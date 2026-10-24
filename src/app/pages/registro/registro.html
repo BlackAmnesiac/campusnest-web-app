@@ -1,0 +1,73 @@
+<div class="auth">
+    <div class="auth-side">
+      <span class="up">Únete a CampusNest</span>
+      <h2>Una comunidad universitaria, verificada.</h2>
+      <ul><li>Correo institucional para todos los usuarios</li><li>DNI o CE para estudiantes anfitriones</li><li>Sin comisiones durante la beta</li></ul>
+    </div>
+    <div class="auth-main"><div class="auth-box">
+      <div class="steps">
+        <span [class.on]="step() >= 0">1 · Tu rol</span>
+        <span [class.on]="step() >= 1">2 · Cuenta</span>
+        <span [class.on]="step() >= 2">3 · Perfil</span>
+      </div>
+
+      <div [hidden]="pane() !== 'rol'">
+        <h1>¿Qué quieres hacer en CampusNest?</h1>
+        <p class="muted" style="margin-bottom:16px">Todos somos estudiantes. Elige tu modo; podrás cambiarlo después en tu perfil.</p>
+        <label class="role"><input type="radio" name="role" value="student" [checked]="role() === 'student'" (change)="role.set('student')"><div class="panel">
+          <h3>Estudiante buscador <em>Busco habitación</em></h3>
+          <p>Quiero encontrar un cuarto o roomie cerca de mi universidad.</p>
+          <ul><li>Match de convivencia</li><li>Visitas presenciales o virtuales</li></ul>
+        </div></label>
+        <label class="role"><input type="radio" name="role" value="host" [checked]="role() === 'host'" (change)="role.set('host')"><div class="panel">
+          <h3>Estudiante anfitrión <em>Ofrezco cuarto</em></h3>
+          <p>Tengo un cuarto disponible y busco un roomie estudiante.</p>
+          <ul><li>Solicitudes de estudiantes verificados</li><li>Panel para gestionar visitas · valida tu DNI o CE</li></ul>
+        </div></label>
+        <button class="btn btn-primary btn-lg btn-block" (click)="pane.set('cuenta')">Continuar</button>
+        <p class="sm muted" style="margin-top:12px;text-align:center">¿Ya tienes cuenta? <a class="accent" routerLink="/login">Inicia sesión</a></p>
+      </div>
+
+      <div [hidden]="pane() !== 'cuenta'">
+        <h1>{{ role() === 'host' ? 'Crea tu cuenta de estudiante anfitrión' : 'Crea tu cuenta de estudiante' }}</h1>
+        <p class="muted" style="margin-bottom:16px" id="regSub">{{ role() === 'host' ? 'Usa tu correo institucional y valida tu identidad con DNI o CE.' : 'Usa tu correo institucional.' }}</p>
+        <div class="grid2"><label class="field"><span>Nombres</span><input placeholder="Andy"></label><label class="field"><span>Apellidos</span><input placeholder="Condori"></label></div>
+        <label class="field"><span id="mailLbl">Correo institucional</span><input type="email" placeholder="nombre@universidad.edu.pe"></label>
+        <label class="field" [hidden]="role() !== 'host'"><span>DNI o CE (solo anfitriones)</span><input placeholder="Número de documento"></label>
+        <label class="field"><span>Contraseña</span><input type="password" placeholder="Mínimo 8 caracteres"></label>
+        <label class="check sm" style="margin-bottom:14px"><input type="checkbox" checked> Acepto los términos y la política de privacidad</label>
+        <div class="row"><button class="btn" (click)="pane.set('rol')">Atrás</button><button class="btn btn-primary btn-block" (click)="toProfile()">Continuar</button></div>
+      </div>
+
+      <div [hidden]="pane() !== 'perfil-student'">
+        <h1>Cuéntanos cómo convives</h1>
+        <p class="muted" style="margin-bottom:16px">Esto alimenta tu % de match. Puedes completarlo luego.</p>
+        <p class="up" style="margin-bottom:6px">Tu horario</p>
+        <div class="seg" data-seg style="margin-bottom:14px"><button class="on">Madrugador</button><button>Flexible</button><button>Nocturno</button></div>
+        <p class="up" style="margin-bottom:6px">Orden y limpieza</p>
+        <div class="seg" data-seg style="margin-bottom:14px"><button>Relajado</button><button class="on">Normal</button><button>Muy ordenado</button></div>
+        <p class="up" style="margin-bottom:6px">Intereses</p>
+        <div class="chips" style="margin-bottom:18px"><button class="chip on" data-chip>Estudio en casa</button><button class="chip" data-chip>Deporte</button><button class="chip" data-chip>Música</button><button class="chip" data-chip>Cocinar</button><button class="chip" data-chip>Mascotas</button></div>
+        <div class="row"><button class="btn" (click)="pane.set('cuenta')">Atrás</button><button class="btn btn-primary btn-block" (click)="pane.set('listo')">Crear cuenta</button></div>
+      </div>
+
+      <div [hidden]="pane() !== 'perfil-host'">
+        <h1>Sobre tu alojamiento</h1>
+        <p class="muted" style="margin-bottom:16px">Una idea general; publicarás los detalles después.</p>
+        <label class="field"><span>Tipo de alojamiento</span><select><option>Departamento compartido</option><option>Casa compartida</option><option>Residencia estudiantil</option></select></label>
+        <label class="field"><span>Distrito</span><input placeholder="Ej. San Miguel"></label>
+        <p class="up" style="margin-bottom:6px">Habitaciones disponibles</p>
+        <div class="seg" data-seg style="margin-bottom:18px"><button class="on">1</button><button>2</button><button>3</button><button>4+</button></div>
+        <div class="row"><button class="btn" (click)="pane.set('cuenta')">Atrás</button><button class="btn btn-primary btn-block" (click)="pane.set('listo')">Crear cuenta</button></div>
+      </div>
+
+      <div [hidden]="pane() !== 'listo'">
+        <div class="done">
+          <div class="mark">✓</div>
+          <h1>¡Cuenta creada!</h1>
+          <p class="muted" style="margin:6px 0 18px" id="doneTxt">{{ role() === 'host' ? 'Valida tu DNI o CE para publicar tu primer cuarto.' : 'Te enviamos un correo para verificar tu cuenta institucional.' }}</p>
+          <button class="btn btn-primary btn-lg btn-block" (click)="goDash()">{{ role() === 'host' ? 'Ir a mi panel de anfitrión' : 'Empezar a buscar' }}</button>
+        </div>
+      </div>
+    </div></div>
+  </div>

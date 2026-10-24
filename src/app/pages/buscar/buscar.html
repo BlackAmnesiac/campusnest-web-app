@@ -1,0 +1,60 @@
+<div class="layout">
+  <aside class="sidebar" [class.open]="filtersOpen()">
+    <h2>Filtros <button class="linkbtn sm" type="button" (click)="reset()">Limpiar</button></h2>
+    <div class="fg">
+      <label class="up" for="q">Ubicación</label>
+      <input class="inp" id="q" type="search" placeholder="Distrito o universidad" [value]="q()" (input)="q.set($any($event.target).value)">
+    </div>
+    <div class="fg">
+      <span class="up">Presupuesto (S/ / mes)</span>
+      <div class="rg">
+        <input class="inp" type="number" min="100" step="10" aria-label="Mínimo" [value]="min()" (input)="min.set(+$any($event.target).value)">
+        <span>–</span>
+        <input class="inp" type="number" min="100" step="10" aria-label="Máximo" [value]="max()" (input)="max.set(+$any($event.target).value)">
+      </div>
+      <input type="range" min="100" max="1500" step="10" aria-label="Máximo" [value]="max()" (input)="max.set(+$any($event.target).value)">
+    </div>
+    <div class="fg">
+      <span class="up">Servicios incluidos</span>
+      @for (s of services; track s.value) {
+        <label class="check"><input type="checkbox" [checked]="svc().includes(s.value)" (change)="toggleSvc(s.value)"> {{ s.label }}</label>
+      }
+    </div>
+    <div class="fg">
+      <label class="up" for="compat">Compatibilidad de convivencia</label>
+      <select class="inp" id="compat" [value]="compat()" (change)="compat.set($any($event.target).value)">
+        <option value="">Cualquiera</option>
+        <option value="alto">Alto (80% o más)</option>
+        <option value="medio">Medio (60–79%)</option>
+        <option value="bajo">Bajo (menos de 60%)</option>
+      </select>
+    </div>
+    <div class="fg">
+      <span class="up">Tipo</span>
+      <label class="check"><input type="checkbox" checked> Individual</label>
+      <label class="check"><input type="checkbox" checked> Compartida</label>
+    </div>
+    <button class="btn btn-primary btn-block" type="button" (click)="filtersOpen.set(false)">Aplicar filtros</button>
+  </aside>
+
+  <main class="main">
+    <div class="main-h">
+      <button class="btn filter-toggle" type="button" (click)="filtersOpen.set(!filtersOpen())">Filtros</button>
+      <div><b>{{ list().length }}</b> habitaciones disponibles <span class="muted">· cerca de tu universidad</span></div>
+      <div class="row"><span class="muted sm">Ordenar:</span>
+        <div class="seg">
+          <button [class.on]="sort() === 'm'" (click)="sort.set('m')">Mejor match</button>
+          <button [class.on]="sort() === 'pa'" (click)="sort.set('pa')">Precio ↑</button>
+          <button [class.on]="sort() === 'pd'" (click)="sort.set('pd')">Precio ↓</button>
+        </div>
+      </div>
+    </div>
+    <div class="cards">
+      @for (r of list(); track r.id) {
+        <a class="card" routerLink="/habitacion" roomCard [room]="r"></a>
+      } @empty {
+        <div class="empty">No hay habitaciones con esos filtros.<br>Prueba ampliando el presupuesto o quitando servicios.</div>
+      }
+    </div>
+  </main>
+</div>
