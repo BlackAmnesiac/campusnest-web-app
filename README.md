@@ -42,18 +42,18 @@ Los colores están como variables CSS al inicio de `src/styles.css` y se usan si
 
 ## Enlaces
 
-- Diseño en Figma: _(pegar el link)_
-- Landing Page: _(pegar el link del repositorio)_
+- Diseño en Figma: https://www.figma.com/design/ksTadJeMR4BF5D97usDBrn/campusname-mockups?node-id=7-248&t=dVgZtFgiDOl6nfXt-1
+- Landing Page: https://github.com/BlackAmnesiac/campusnest-landing-page.git
 - Backend: https://github.com/andynary/campusnest-web-services
 
 ## Integrantes
 
 | Nombre y apellido | Usuario de GitHub |
 |---|---|
-| _(completar)_ | _(completar)_ |
-| _(completar)_ | _(completar)_ |
-| _(completar)_ | _(completar)_ |
-| _(completar)_ | _(completar)_ |
+| _(Andy Condori)_ | _(andynary)_ |
+| _(Austin Flores)_ | _(BlackAmnesiac)_ |
+| _(Diego Flores)_ | _(DiegoFlores-123)_ |
+| _(Peter Pacherres)_ | _(Peter-PachMu)_ |
 
 ## Convención de commits
 
