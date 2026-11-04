@@ -1,5 +1,6 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Auth } from '../../core/auth';
 import { Rooms } from '../../core/rooms';
 import { RoomCard } from '../../shared/room-card';
 
@@ -14,14 +15,13 @@ const nivel = (m: number) => (m >= 80 ? 'alto' : m >= 60 ? 'medio' : 'bajo');
   templateUrl: './buscar.html',
 })
 export class Buscar {
-  private rooms = inject(Rooms);
+  rooms = inject(Rooms);
+  private auth = inject(Auth);
 
+  // Características que devuelve el backend en cada habitación
   services = [
-    { value: 'Agua', label: 'Agua' },
-    { value: 'Luz', label: 'Luz' },
-    { value: 'Internet', label: 'Internet' },
-    { value: 'Lavandería', label: 'Lavandería' },
-    { value: 'Cocina', label: 'Cocina compartida' },
+    { value: 'Amoblado', label: 'Amoblado' },
+    { value: 'Baño privado', label: 'Baño privado' },
   ];
 
   q = signal('');
@@ -36,7 +36,7 @@ export class Buscar {
     const lo = Math.max(100, this.min() || 100);
     const hi = this.max() || 1500;
     const text = normalizar(this.q().trim());
-    const lista = this.rooms.all.filter(
+    const lista = this.rooms.all().filter(
       (r) =>
         r.p >= lo &&
         r.p <= hi &&
@@ -53,6 +53,8 @@ export class Buscar {
     // Viene de la Landing: ?q=Surco
     const q = new URLSearchParams(window.location.search).get('q');
     if (q) this.q.set(q);
+    // Trae las habitaciones desde el backend (GET /api/rooms/search)
+    this.rooms.load(this.auth.profile());
   }
 
   toggleSvc(value: string) {

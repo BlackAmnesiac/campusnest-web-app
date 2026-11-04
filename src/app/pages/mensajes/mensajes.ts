@@ -1,5 +1,7 @@
-import { Component, ElementRef, signal, viewChild } from '@angular/core';
+import { Component, ElementRef, effect, inject, viewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Chats } from '../../core/chats';
+import { Session } from '../../core/session';
 
 @Component({
   selector: 'app-mensajes',
@@ -7,30 +9,40 @@ import { RouterLink } from '@angular/router';
   templateUrl: './mensajes.html',
 })
 export class Mensajes {
-  sel = signal(0);
-  unread = signal([true, true, false, false]);
-  private box = viewChild<ElementRef<HTMLElement>>('chatBox');
-  messages = signal([
-    { me: false, text: 'Hola Mateo, me interesa la habitación. ¿Sigue disponible?', time: '10:02' },
-    { me: true, text: '¡Hola Andy! Sí, está disponible desde el 1 de noviembre.', time: '10:05' },
-    { me: false, text: 'Perfecto. ¿Puedo visitarla el lunes al mediodía?', time: '10:07' },
-    { me: true, text: 'Claro, el lunes a las 12 te espero.', time: '10:09' },
-  ]);
+  chats = inject(Chats);
+  session = inject(Session);
 
-  select(i: number) {
-    this.sel.set(i);
-    this.unread.update((u) => u.map((v, k) => (k === i ? false : v)));
+  private box = viewChild<ElementRef<HTMLElement>>('chatBox');
+
+  constructor() {
+    // Al cambiar de conversación o enviar un mensaje, baja hasta el último.
+    effect(() => {
+      this.chats.selected()?.messages.length;
+      setTimeout(() => {
+        const el = this.box()?.nativeElement;
+        if (el) el.scrollTop = el.scrollHeight;
+      });
+    });
+  }
+
+  initials(name: string) {
+    return name
+      .split(' ')
+      .filter((x) => x)
+      .slice(0, 2)
+      .map((x) => x[0].toUpperCase())
+      .join('');
+  }
+
+  last(c: { messages: { text: string }[]; subtitle: string }) {
+    return c.messages.length ? c.messages[c.messages.length - 1].text : c.subtitle;
   }
 
   send(e: Event, input: HTMLInputElement) {
     e.preventDefault();
     const text = input.value.trim();
     if (!text) return;
-    this.messages.update((m) => [...m, { me: true, text, time: 'Ahora' }]);
+    this.chats.send(text);
     input.value = '';
-    setTimeout(() => {
-      const el = this.box()?.nativeElement;
-      if (el) el.scrollTop = el.scrollHeight;
-    });
   }
 }

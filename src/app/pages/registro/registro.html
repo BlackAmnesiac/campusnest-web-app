@@ -11,6 +11,9 @@
         <span [class.on]="step() >= 2">3 · Perfil</span>
       </div>
 
+      @if (error()) {
+        <p class="sm" role="alert" style="color:var(--primary);margin-bottom:12px">{{ error() }}</p>
+      }
       <div [hidden]="pane() !== 'rol'">
         <h1>¿Qué quieres hacer en CampusNest?</h1>
         <p class="muted" style="margin-bottom:16px">Todos somos estudiantes. Elige tu modo; podrás cambiarlo después en tu perfil.</p>
@@ -31,10 +34,11 @@
       <div [hidden]="pane() !== 'cuenta'">
         <h1>{{ role() === 'host' ? 'Crea tu cuenta de estudiante anfitrión' : 'Crea tu cuenta de estudiante' }}</h1>
         <p class="muted" style="margin-bottom:16px" id="regSub">{{ role() === 'host' ? 'Usa tu correo institucional y valida tu identidad con DNI o CE.' : 'Usa tu correo institucional.' }}</p>
-        <div class="grid2"><label class="field"><span>Nombres</span><input placeholder="Andy"></label><label class="field"><span>Apellidos</span><input placeholder="Condori"></label></div>
-        <label class="field"><span id="mailLbl">Correo institucional</span><input type="email" placeholder="nombre@universidad.edu.pe"></label>
+        <div class="grid2"><label class="field"><span>Nombres</span><input placeholder="Andy" (input)="set('nombres', $any($event.target).value)"></label><label class="field"><span>Apellidos</span><input placeholder="Condori" (input)="set('apellidos', $any($event.target).value)"></label></div>
+        <label class="field"><span id="mailLbl">Correo institucional</span><input type="email" autocomplete="email" placeholder="nombre@universidad.edu.pe" (input)="set('email', $any($event.target).value)"></label>
+        <label class="field"><span>Universidad</span><input placeholder="Ej. UPC" (input)="set('universidad', $any($event.target).value)"></label>
         <label class="field" [hidden]="role() !== 'host'"><span>DNI o CE (solo anfitriones)</span><input placeholder="Número de documento"></label>
-        <label class="field"><span>Contraseña</span><input type="password" placeholder="Mínimo 8 caracteres"></label>
+        <label class="field"><span>Contraseña</span><input type="password" autocomplete="new-password" placeholder="Mínimo 6 caracteres" (input)="set('password', $any($event.target).value)"></label>
         <label class="check sm" style="margin-bottom:14px"><input type="checkbox" checked> Acepto los términos y la política de privacidad</label>
         <div class="row"><button class="btn" (click)="pane.set('rol')">Atrás</button><button class="btn btn-primary btn-block" (click)="toProfile()">Continuar</button></div>
       </div>
@@ -43,12 +47,14 @@
         <h1>Cuéntanos cómo convives</h1>
         <p class="muted" style="margin-bottom:16px">Esto alimenta tu % de match. Puedes completarlo luego.</p>
         <p class="up" style="margin-bottom:6px">Tu horario</p>
-        <div class="seg" data-seg style="margin-bottom:14px"><button class="on">Madrugador</button><button>Flexible</button><button>Nocturno</button></div>
+        <div class="seg" style="margin-bottom:14px">@for (o of schedules; track o) {<button type="button" [class.on]="schedule() === o" (click)="schedule.set(o)">{{ o }}</button>}</div>
         <p class="up" style="margin-bottom:6px">Orden y limpieza</p>
-        <div class="seg" data-seg style="margin-bottom:14px"><button>Relajado</button><button class="on">Normal</button><button>Muy ordenado</button></div>
+        <div class="seg" style="margin-bottom:14px">@for (o of cleanOpts; track o.value) {<button type="button" [class.on]="clean() === o.value" (click)="clean.set(o.value)">{{ o.label }}</button>}</div>
+        <p class="up" style="margin-bottom:6px">Nivel de ruido</p>
+        <div class="seg" style="margin-bottom:14px">@for (o of noiseOpts; track o.value) {<button type="button" [class.on]="noise() === o.value" (click)="noise.set(o.value)">{{ o.label }}</button>}</div>
         <p class="up" style="margin-bottom:6px">Intereses</p>
-        <div class="chips" style="margin-bottom:18px"><button class="chip on" data-chip>Estudio en casa</button><button class="chip" data-chip>Deporte</button><button class="chip" data-chip>Música</button><button class="chip" data-chip>Cocinar</button><button class="chip" data-chip>Mascotas</button></div>
-        <div class="row"><button class="btn" (click)="pane.set('cuenta')">Atrás</button><button class="btn btn-primary btn-block" (click)="pane.set('listo')">Crear cuenta</button></div>
+        <div class="chips" style="margin-bottom:18px">@for (c of interestOpts; track c) {<button type="button" class="chip" [class.on]="interests().includes(c)" (click)="toggleInterest(c)">{{ c }}</button>}</div>
+        <div class="row"><button class="btn" (click)="pane.set('cuenta')">Atrás</button><button class="btn btn-primary btn-block" (click)="submit()" [disabled]="loading()">{{ loading() ? 'Creando…' : 'Crear cuenta' }}</button></div>
       </div>
 
       <div [hidden]="pane() !== 'perfil-host'">
@@ -58,7 +64,7 @@
         <label class="field"><span>Distrito</span><input placeholder="Ej. San Miguel"></label>
         <p class="up" style="margin-bottom:6px">Habitaciones disponibles</p>
         <div class="seg" data-seg style="margin-bottom:18px"><button class="on">1</button><button>2</button><button>3</button><button>4+</button></div>
-        <div class="row"><button class="btn" (click)="pane.set('cuenta')">Atrás</button><button class="btn btn-primary btn-block" (click)="pane.set('listo')">Crear cuenta</button></div>
+        <div class="row"><button class="btn" (click)="pane.set('cuenta')">Atrás</button><button class="btn btn-primary btn-block" (click)="submit()" [disabled]="loading()">{{ loading() ? 'Creando…' : 'Crear cuenta' }}</button></div>
       </div>
 
       <div [hidden]="pane() !== 'listo'">
