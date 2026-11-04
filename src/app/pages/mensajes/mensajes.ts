@@ -1,7 +1,9 @@
-import { Component, ElementRef, effect, inject, viewChild } from '@angular/core';
+import { Component, DestroyRef, ElementRef, computed, effect, inject, viewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { apiError } from '../../core/api-error';
 import { Chats } from '../../core/chats';
 import { Session } from '../../core/session';
+import { Toast } from '../../core/toast';
 
 @Component({
   selector: 'app-mensajes',
@@ -11,13 +13,22 @@ import { Session } from '../../core/session';
 export class Mensajes {
   chats = inject(Chats);
   session = inject(Session);
+  private toast = inject(Toast);
 
   private box = viewChild<ElementRef<HTMLElement>>('chatBox');
 
+  /** Cambia al abrir otra conversación o al llegar un mensaje nuevo (no en cada refresco). */
+  private scrollKey = computed(() => `${this.chats.selected()?.id}:${this.chats.messages().length}`);
+
   constructor() {
-    // Al cambiar de conversación o enviar un mensaje, baja hasta el último.
+    this.chats.reset();
+    this.chats.load();
+    // El backend no empuja mensajes: se consulta cada 5 s para ver lo que escribe la otra persona.
+    const timer = setInterval(() => this.chats.load(), 5000);
+    inject(DestroyRef).onDestroy(() => clearInterval(timer));
+
     effect(() => {
-      this.chats.selected()?.messages.length;
+      this.scrollKey();
       setTimeout(() => {
         const el = this.box()?.nativeElement;
         if (el) el.scrollTop = el.scrollHeight;
@@ -34,15 +45,13 @@ export class Mensajes {
       .join('');
   }
 
-  last(c: { messages: { text: string }[]; subtitle: string }) {
-    return c.messages.length ? c.messages[c.messages.length - 1].text : c.subtitle;
-  }
-
   send(e: Event, input: HTMLInputElement) {
     e.preventDefault();
     const text = input.value.trim();
     if (!text) return;
-    this.chats.send(text);
-    input.value = '';
+    this.chats.send(text).subscribe({
+      next: () => (input.value = ''),
+      error: (err) => this.toast.show(apiError(err)),
+    });
   }
 }

@@ -28,7 +28,7 @@ export class Anfitrion {
   /** Acepta la solicitud, abre la conversación con el estudiante y lleva a Mensajes. */
   accept(a: ApplicationDto) {
     this.host.decideApplication(a.id, 'ACCEPTED', () => {
-      this.chats.open(`app-${a.id}`, a.applicantName, a.roomName, a.roomId);
+      this.chats.select(a.id);
       this.router.navigateByUrl('/mensajes');
     });
   }
