@@ -4,6 +4,8 @@ import { Catalog } from '../../core/catalog';
 import { Host } from '../../core/host';
 import { Toast } from '../../core/toast';
 
+// feat(anfitrion): agregar asistente para publicar habitacion (US-13)
+
 @Component({
   selector: 'app-publicar',
   templateUrl: './publicar.html',
