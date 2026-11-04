@@ -1,5 +1,6 @@
 <!--feat(anfitrion): agregar pestaña de solicitudes recibidas con habitos del solicitante-->  
 
+
 <div class="wrap page">
   <div class="head-row"><div><h1>Panel de anfitrión</h1><p class="muted">Gestiona tus habitaciones, solicitudes y visitas.</p></div><a class="btn btn-primary" routerLink="/publicar">+ Publicar habitación</a></div>
 
@@ -16,6 +17,9 @@
 
   <div class="tabs">
     <!-- Contador US18-->
+
+  <!--feat(anfitrion): agregar indicadores al panel de anfitrion-->
+
     <button (click)="tab.set('solic')" [class.on]="tab()==='solic'">Solicitudes @if (host.pendingApplications() > 0) { <span class="badge-n">{{ host.pendingApplications() }}</span> }</button>
     <button (click)="tab.set('pub')" [class.on]="tab()==='pub'">Mis publicaciones</button>
     <button (click)="tab.set('vis')" [class.on]="tab()==='vis'">Visitas</button>
