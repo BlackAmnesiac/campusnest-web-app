@@ -85,7 +85,7 @@ export class Host {
   decideApplication(id: number, status: string, onOk?: () => void) {
     this.act(this.http.patch(`${api}/applications/${id}/status`, { status }), 'Solicitud actualizada', onOk);
   }
-
+  // Se modifica el estado de la solicitud de una habitacion, ya sea aceptandola o rechazandola. Se hace un PATCH a la API con el id de la solicitud y el nuevo estado.
   /** PATCH /api/visits/{id}/status (APPROVED o REJECTED) */
   decideVisit(id: number, status: string) {
     this.act(this.http.patch(`${api}/visits/${id}/status`, { status }), 'Visita actualizada');
