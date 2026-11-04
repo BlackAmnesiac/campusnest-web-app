@@ -49,9 +49,15 @@
         </div>
       </div>
     </div>
+    @if (rooms.loading()) {
+      <div class="empty">Cargando habitaciones…</div>
+    }
+    @if (rooms.error(); as e) {
+      <div class="empty">{{ e }}</div>
+    }
     <div class="cards">
       @for (r of list(); track r.id) {
-        <a class="card" routerLink="/habitacion" roomCard [room]="r"></a>
+        <a class="card" [routerLink]="['/habitacion', r.id]" roomCard [room]="r"></a>
       } @empty {
         <div class="empty">No hay habitaciones con esos filtros.<br>Prueba ampliando el presupuesto o quitando servicios.</div>
       }

@@ -7,14 +7,14 @@
     <div class="auth-main"><div class="auth-box">
       <h1>Iniciar sesión</h1>
       <p class="muted" style="margin-bottom:20px">¿No tienes cuenta? <a class="accent" routerLink="/registro">Regístrate</a></p>
-      <form (submit)="submit($event)">
-        <label class="field"><span>Correo</span><input type="email" placeholder="nombre@universidad.edu.pe"></label>
-        <label class="field"><span>Contraseña</span><input type="password" placeholder="••••••••"></label>
+      <form (submit)="submit($event, email.value, password.value)">
+        <label class="field"><span>Correo</span><input #email type="email" name="email" autocomplete="email" placeholder="nombre@universidad.edu.pe"></label>
+        <label class="field"><span>Contraseña</span><input #password type="password" name="password" autocomplete="current-password" placeholder="••••••••"></label>
         <div class="row" style="margin-bottom:16px"><label class="check sm"><input type="checkbox" checked> Mantener sesión</label><span class="sp"></span><a class="accent sm" routerLink="/login">¿Olvidaste tu contraseña?</a></div>
-        <button class="btn btn-primary btn-lg btn-block" type="submit">Ingresar</button>
+        @if (error()) {
+          <p class="sm" role="alert" style="color:var(--primary);margin-bottom:12px">{{ error() }}</p>
+        }
+        <button class="btn btn-primary btn-lg btn-block" type="submit" [disabled]="loading()">{{ loading() ? 'Ingresando…' : 'Ingresar' }}</button>
       </form>
-      <hr class="hr" style="margin:20px 0">
-      <p class="sm muted" style="margin-bottom:8px">Demo — entrar directamente como:</p>
-      <div class="row"><button class="btn btn-sm" (click)="enter('student')">Estudiante</button><button class="btn btn-sm" (click)="enter('host')">Anfitrión</button></div>
     </div></div>
   </div>

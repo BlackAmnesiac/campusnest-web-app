@@ -2,11 +2,16 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
+  <script>
+    /* Aplica el tema guardado antes de pintar la página (evita el parpadeo). Por defecto: claro. */
+    try { document.documentElement.setAttribute("data-theme", localStorage.getItem("campusnest-theme") === "dark" ? "dark" : "light"); }
+    catch (e) { document.documentElement.setAttribute("data-theme", "light"); }
+</script>
   <title>CampusNest — Web Application</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#121214">
-  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#F6F6F8">
+  <meta name="color-scheme" content="light dark">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>

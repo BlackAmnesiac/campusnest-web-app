@@ -22,8 +22,8 @@ import { Room, Rooms } from '../core/rooms';
       <div class="ti" [title]="room().t">{{ room().t }}</div>
       <div class="ft">
         <span class="tag" [class.hi]="room().m >= 80">{{ room().m }}% match</span>
-        @if (room().s.length >= 4) {
-          <span class="tag mut">Todo incluido</span>
+        @for (x of room().s; track x) {
+          <span class="tag mut">{{ x }}</span>
         }
       </div>
       <div class="buy">

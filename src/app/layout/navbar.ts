@@ -3,16 +3,19 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { filter, map } from 'rxjs';
 import { LANDING_URL } from '../config';
-import { Role, Session } from '../core/session';
+import { Auth } from '../core/auth';
+import { Session } from '../core/session';
+import { ThemeToggle } from '../shared/theme-toggle';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, ThemeToggle],
   templateUrl: './navbar.html',
   host: { '(document:click)': 'menuOpen.set(false)' },
 })
 export class Navbar {
   session = inject(Session);
+  private auth = inject(Auth);
   private router = inject(Router);
 
   landingUrl = LANDING_URL;
@@ -32,14 +35,18 @@ export class Navbar {
     return u === '/' || u.startsWith('/login') || u.startsWith('/registro');
   });
 
+  name = computed(() => this.auth.user()?.fullName ?? '');
+  initials = computed(() =>
+    this.name()
+      .split(' ')
+      .filter((x) => x)
+      .slice(0, 2)
+      .map((x) => x[0].toUpperCase())
+      .join('') || '?',
+  );
+
   toggle(e: Event) {
     e.stopPropagation();
     this.menuOpen.update((v) => !v);
-  }
-
-  switchRole(role: Role) {
-    this.session.role.set(role);
-    this.menuOpen.set(false);
-    this.router.navigateByUrl(role === 'host' ? '/anfitrion' : '/estudiante');
   }
 }
