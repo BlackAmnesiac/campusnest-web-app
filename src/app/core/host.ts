@@ -23,6 +23,8 @@ export interface ListingForm {
 }
 
 
+// feat(anfitrion): agregar indicadores al panel de anfitrion
+
 /** Panel del anfitrión: propiedades, solicitudes y visitas. */
 @Injectable({ providedIn: 'root' })
 export class Host {
