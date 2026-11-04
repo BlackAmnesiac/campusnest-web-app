@@ -7,7 +7,7 @@ import { Seeker } from '../../core/seeker';
 import { Session } from '../../core/session';
 import { Toast } from '../../core/toast';
 
-/** Fecha mínima para agendar (dentro de 1 hora) en formato de <input type="datetime-local">. */
+/** Devuelve la fecha mínima para agendar (dentro de 1 hora) en formato de <input type="datetime-local">. */
 function minVisit(): string {
   const d = new Date(Date.now() + 60 * 60 * 1000);
   const p = (n: number) => String(n).padStart(2, '0');
@@ -38,7 +38,7 @@ export class Habitacion {
     if (!this.rooms.all().length) this.rooms.load(this.auth.profile());
   }
 
-  /** POST /api/rooms/{id}/applications */
+  /** Se encarga de enviar una solicitud para unirse a una habitación */
   apply() {
     this.busy.set(true);
     this.seeker.apply(this.id).subscribe({
