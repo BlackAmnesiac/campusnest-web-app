@@ -5,6 +5,7 @@ import { Chats } from '../../core/chats';
 import { Session } from '../../core/session';
 import { Toast } from '../../core/toast';
 
+/** US 02 Mensajes de chat */
 @Component({
   selector: 'app-mensajes',
   imports: [RouterLink],
