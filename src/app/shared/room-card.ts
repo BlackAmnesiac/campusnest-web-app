@@ -1,3 +1,4 @@
+//Se encarga de mostrar la información de una habitación en una tarjeta. Se usa sobre un enlace <a> para que al hacer click se pueda ir a la página de la habitación.
 import { Component, computed, inject, input } from '@angular/core';
 import { Room, Rooms } from '../core/rooms';
 
