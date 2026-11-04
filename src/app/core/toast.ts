@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-
+/** Logica de las alertas US18. */
 /** Mensajes breves ("Cambios guardados (demo)"). */
 @Injectable({ providedIn: 'root' })
 export class Toast {
