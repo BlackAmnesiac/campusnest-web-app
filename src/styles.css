@@ -50,6 +50,7 @@
 }
 
 /* ================= TEMA OSCURO ================= */
+/* Para activar el tema oscuro, agrega data-theme="dark" al elemento <html> */
 :root[data-theme="dark"]{
   color-scheme:dark;
   --primary-container:#3A1722;
