@@ -1,3 +1,4 @@
+//cambiamos de tema en la aplicación. Se guarda en localStorage y se aplica con data-theme en <html>.
 import { Injectable, signal } from '@angular/core';
 
 export type Mode = 'light' | 'dark';
