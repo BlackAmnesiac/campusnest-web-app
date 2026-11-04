@@ -80,7 +80,7 @@ export class Rooms {
       },
     });
   }
-
+// Se actualiza la lista de favoritos agregando o eliminando el id de la habitación según corresponda.
   isFav(id: number) {
     return this.favs().has(id);
   }
