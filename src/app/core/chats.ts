@@ -1,5 +1,11 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
+import { tap } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { apiError } from './api-error';
 import { Auth } from './auth';
+
+const api = environment.apiUrl;
 
 export interface ChatMessage {
   me: boolean;
@@ -7,79 +13,119 @@ export interface ChatMessage {
   time: string;
 }
 
+/** Una conversación = una solicitud aceptada; el id es el de la solicitud. */
 export interface Conversation {
-  id: string;
+  id: number;
   name: string;
-  /** Texto bajo el nombre (por ejemplo, la habitación de la solicitud). */
+  /** Habitación de la solicitud. */
   subtitle: string;
-  roomId: number | null;
-  messages: ChatMessage[];
+  roomId: number;
+  lastMessage: string | null;
 }
 
-type Store = Record<string, Conversation[]>;
-
-const KEY = 'campusnest-chats';
-
-function read(): Store {
-  try {
-    const raw = localStorage.getItem(KEY);
-    return raw ? (JSON.parse(raw) as Store) : {};
-  } catch {
-    return {};
-  }
+/** Respuesta de GET /api/conversations */
+interface ConversationDto {
+  applicationId: number;
+  roomId: number;
+  roomName: string;
+  otherUserId: number;
+  otherUserName: string;
+  lastMessage: string | null;
+  lastMessageAt: string | null;
 }
 
-function write(value: Store) {
-  try {
-    localStorage.setItem(KEY, JSON.stringify(value));
-  } catch {
-    // sin almacenamiento: las conversaciones duran solo esta visita
-  }
+/** Respuesta de GET/POST /api/conversations/{id}/messages */
+interface MessageDto {
+  id: number;
+  applicationId: number;
+  senderId: number;
+  senderName: string;
+  content: string;
+  sentAt: string;
 }
 
-/**
- * Conversaciones del usuario actual. Empiezan vacías y se guardan solo en este navegador
- * (el backend todavía no tiene módulo de mensajes).
- */
+const hora = (iso: string) => new Date(iso).toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' });
+
+/** Mensajes entre anfitrión y estudiante (solo existen para solicitudes aceptadas). */
 @Injectable({ providedIn: 'root' })
 export class Chats {
+  private http = inject(HttpClient);
   private auth = inject(Auth);
-  private store = signal<Store>(read());
 
-  private selectedId = signal<string | null>(null);
+  conversations = signal<Conversation[]>([]);
+  messages = signal<ChatMessage[]>([]);
+  /** false hasta que llega la primera respuesta del backend. */
+  loaded = signal(false);
+  error = signal<string | null>(null);
 
-  conversations = computed(() => this.store()[String(this.auth.user()?.userId)] ?? []);
+  private selectedId = signal<number | null>(null);
   selected = computed(() => {
     const list = this.conversations();
     return list.find((c) => c.id === this.selectedId()) ?? list[0];
   });
 
-  /** Crea la conversación si no existe y la deja seleccionada. */
-  open(id: string, name: string, subtitle: string, roomId: number | null) {
-    this.update((list) => (list.some((c) => c.id === id) ? list : [...list, { id, name, subtitle, roomId, messages: [] }]));
-    this.selectedId.set(id);
+  /** Vacía lo cargado (otro usuario pudo usar el navegador antes). No cambia la conversación elegida. */
+  reset() {
+    this.conversations.set([]);
+    this.messages.set([]);
+    this.error.set(null);
+    this.loaded.set(false);
   }
 
-  select(id: string) {
-    this.selectedId.set(id);
+  /** GET /api/conversations y, de la conversación abierta, GET /api/conversations/{id}/messages */
+  load() {
+    this.http.get<ConversationDto[]>(`${api}/conversations`).subscribe({
+      next: (list) => {
+        this.conversations.set(
+          list.map((c) => ({
+            id: c.applicationId,
+            name: c.otherUserName,
+            subtitle: c.roomName,
+            roomId: c.roomId,
+            lastMessage: c.lastMessage,
+          })),
+        );
+        this.error.set(null);
+        this.loaded.set(true);
+        this.loadMessages();
+      },
+      error: (err) => this.error.set(apiError(err)),
+    });
   }
 
+  /** Abre una conversación (por ejemplo, la que se acaba de crear al aceptar una solicitud). */
+  select(id: number) {
+    this.selectedId.set(id);
+    if (this.conversations().some((c) => c.id === id)) this.loadMessages();
+  }
+
+  /** POST /api/conversations/{id}/messages */
   send(text: string) {
     const id = this.selected()?.id;
-    if (!id) return;
-    const time = new Date().toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' });
-    this.update((list) =>
-      list.map((c) => (c.id === id ? { ...c, messages: [...c.messages, { me: true, text, time }] } : c)),
+    return this.http.post<MessageDto>(`${api}/conversations/${id}/messages`, { content: text }).pipe(
+      tap((m) => {
+        if (this.selected()?.id === id) this.messages.update((l) => [...l, this.toMessage(m)]);
+        this.conversations.update((l) => l.map((c) => (c.id === id ? { ...c, lastMessage: m.content } : c)));
+      }),
     );
   }
 
-  private update(fn: (list: Conversation[]) => Conversation[]) {
-    const uid = this.auth.user()?.userId;
-    if (uid === undefined) return;
-    this.store.update((s) => {
-      const next = { ...s, [String(uid)]: fn(s[String(uid)] ?? []) };
-      write(next);
-      return next;
+  private loadMessages() {
+    const id = this.selected()?.id;
+    if (id === undefined) {
+      this.messages.set([]);
+      return;
+    }
+    this.http.get<MessageDto[]>(`${api}/conversations/${id}/messages`).subscribe({
+      next: (list) => {
+        // Si mientras tanto se abrió otra conversación, se descarta esta respuesta.
+        if (this.selected()?.id === id) this.messages.set(list.map((m) => this.toMessage(m)));
+      },
+      error: (err) => this.error.set(apiError(err)),
     });
+  }
+
+  private toMessage(m: MessageDto): ChatMessage {
+    return { me: m.senderId === this.auth.user()?.userId, text: m.content, time: hora(m.sentAt) };
   }
 }

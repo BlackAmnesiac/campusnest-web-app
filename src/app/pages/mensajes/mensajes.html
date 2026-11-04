@@ -1,12 +1,16 @@
 <div class="wrap page">
     <h1 style="margin-bottom:12px">Mensajes</h1>
-    @if (!chats.conversations().length) {
+    @if (chats.error() && !chats.conversations().length) {
+      <div class="panel"><div class="empty">{{ chats.error() }}</div></div>
+    } @else if (!chats.loaded()) {
+      <div class="panel"><div class="empty">Cargando…</div></div>
+    } @else if (!chats.conversations().length) {
       <div class="panel">
         <div class="empty">
           @if (session.role() === 'host') {
             Aún no tienes conversaciones. Cuando aceptes una solicitud, la conversación con ese estudiante aparecerá aquí.
           } @else {
-            Aún no tienes conversaciones. Aquí aparecerán tus mensajes con los anfitriones.
+            Aún no tienes conversaciones. Cuando un anfitrión acepte tu solicitud, podrán escribirse aquí.
           }
         </div>
       </div>
@@ -14,14 +18,14 @@
       <div class="panel chat">
         <div class="chat-l">
           @for (c of chats.conversations(); track c.id) {
-            <button class="conv" [class.on]="chats.selected()?.id === c.id" (click)="chats.select(c.id)"><div class="avatar">{{ initials(c.name) }}</div><div class="t"><b>{{ c.name }}</b><span class="sm muted">{{ last(c) }}</span></div></button>
+            <button class="conv" [class.on]="chats.selected()?.id === c.id" (click)="chats.select(c.id)"><div class="avatar">{{ initials(c.name) }}</div><div class="t"><b>{{ c.name }}</b><span class="sm muted">{{ c.lastMessage ?? c.subtitle }}</span></div></button>
           }
         </div>
         @if (chats.selected(); as sel) {
           <div class="chat-r">
             <div class="panel-h"><div class="row"><div class="avatar">{{ initials(sel.name) }}</div><div><b>{{ sel.name }}</b><div class="sm muted">{{ sel.subtitle }}</div></div></div>@if (sel.roomId) { <a class="btn btn-sm" [routerLink]="['/habitacion', sel.roomId]">Ver habitación</a> }</div>
             <div class="chat-b" #chatBox>
-              @for (m of sel.messages; track $index) {
+              @for (m of chats.messages(); track $index) {
                 <div class="msg" [class.me]="m.me">{{ m.text }}<small>{{ m.time }}</small></div>
               } @empty {
                 <div class="empty">Aún no hay mensajes. Escribe el primero.</div>
