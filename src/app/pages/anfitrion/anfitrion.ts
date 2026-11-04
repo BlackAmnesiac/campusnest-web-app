@@ -24,7 +24,7 @@ export class Anfitrion {
   constructor() {
     this.host.load();
   }
-
+  /** US 02 Mensajes de chat */
   /** Acepta la solicitud, abre la conversación con el estudiante y lleva a Mensajes. */
   accept(a: ApplicationDto) {
     this.host.decideApplication(a.id, 'ACCEPTED', () => {

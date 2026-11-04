@@ -5,6 +5,8 @@ import { environment } from '../../environments/environment';
 import { apiError } from './api-error';
 import { Auth } from './auth';
 
+/** US 02 Mensajes de chat */
+
 const api = environment.apiUrl;
 
 export interface ChatMessage {
