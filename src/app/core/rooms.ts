@@ -1,3 +1,4 @@
+/**Se encarga de traer las habitaciones desde el backend y mantenerlas en memoria. */
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
