@@ -94,6 +94,8 @@ export class Host {
     this.act(this.http.patch(`${api}/visits/${id}/status`, { status }), 'Visita actualizada');
   }
 
+  // feat(anfitrion): agregar asistente para publicar habitacion
+
   /** POST /api/properties -> POST /api/properties/{id}/rooms -> PUT /api/rooms/{id}/services */
   createListing(f: ListingForm): Observable<RoomDto> {
     const property$: Observable<{ id: number }> = f.propertyId
