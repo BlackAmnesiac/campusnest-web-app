@@ -8,6 +8,8 @@ import { Named } from './models';
 export class Catalog {
   private http = inject(HttpClient);
 
+  // feat(anfitrion): agregar asistente para publicar habitacion
+
   districts = signal<Named[]>([]);
   services = signal<Named[]>([]);
 
