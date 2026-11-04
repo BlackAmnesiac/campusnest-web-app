@@ -75,6 +75,7 @@ export class Host {
       });
   }
 
+  /* Funcion para desactivar y activar el status de la habitacion US08*/
   /** PATCH /api/rooms/{id}/status */
   setStatus(roomId: number, status: string) {
     this.act(this.http.patch<RoomDto>(`${api}/rooms/${roomId}/status`, { status }), 'Estado actualizado');
