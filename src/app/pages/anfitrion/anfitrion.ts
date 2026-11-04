@@ -6,6 +6,8 @@ import { Host } from '../../core/host';
 import { ApplicationDto } from '../../core/models';
 import { APP_STATUS, ROOM_STATUS, VISIT_STATUS } from '../../core/labels';
 
+// feat(anfitrion): agregar indicadores al panel de anfitrion (US-04)
+
 @Component({
   selector: 'app-anfitrion',
   imports: [RouterLink, DatePipe],
