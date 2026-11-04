@@ -7,6 +7,8 @@ import { ApplicationDto, VisitDto } from './models';
 
 const api = environment.apiUrl;
 
+// feat(student): añadir panel del estudiante con visitas, solicitudes y favoritos
+
 /** Postulaciones y visitas del estudiante buscador. */
 @Injectable({ providedIn: 'root' })
 export class Seeker {

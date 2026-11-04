@@ -7,6 +7,8 @@ import { Rooms } from '../../core/rooms';
 import { Seeker } from '../../core/seeker';
 import { RoomCard } from '../../shared/room-card';
 
+// feat(student): añadir panel del estudiante con visitas, solicitudes y favoritos
+
 @Component({
   selector: 'app-estudiante',
   imports: [RouterLink, DatePipe, RoomCard],
