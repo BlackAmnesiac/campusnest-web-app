@@ -22,6 +22,7 @@ export interface ListingForm {
   serviceIds: number[];
 }
 
+
 /** Panel del anfitrión: propiedades, solicitudes y visitas. */
 @Injectable({ providedIn: 'root' })
 export class Host {
@@ -80,6 +81,8 @@ export class Host {
   setStatus(roomId: number, status: string) {
     this.act(this.http.patch<RoomDto>(`${api}/rooms/${roomId}/status`, { status }), 'Estado actualizado');
   }
+
+  // feat(anfitrion): agregar pestaña de solicitudes recibidas con habitos del solicitante
 
   /** PATCH /api/applications/{id}/status (ACCEPTED o REJECTED) */
   decideApplication(id: number, status: string, onOk?: () => void) {
