@@ -47,3 +47,10 @@ export interface VisitDto {
   visitDateTime: string;
   status: string;
 }
+
+/** Respuesta del agente de IA del anfitrion (POST /api/agent/host/chat). */
+export interface HostAgentReply {
+  message: string;
+  /** true si el agente cambió el estado de alguna habitación (hay que refrescar el panel). */
+  roomsChanged: boolean;
+}

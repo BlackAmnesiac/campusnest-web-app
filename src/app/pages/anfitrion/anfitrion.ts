@@ -5,12 +5,13 @@ import { Chats } from '../../core/chats';
 import { Host } from '../../core/host';
 import { ApplicationDto } from '../../core/models';
 import { APP_STATUS, ROOM_STATUS, VISIT_STATUS } from '../../core/labels';
+import { HostAssistant } from '../../shared/host-assistant';
 
 // feat(anfitrion): agregar indicadores al panel de anfitrion
 
 @Component({
   selector: 'app-anfitrion',
-  imports: [RouterLink, DatePipe],
+  imports: [RouterLink, DatePipe, HostAssistant],
   templateUrl: './anfitrion.html',
 })
 export class Anfitrion {
